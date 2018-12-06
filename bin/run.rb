@@ -13,6 +13,8 @@ drinkObj = find_drink(patronObj)
 patronObj.update_tab(drinkObj)
 favorite_drink = patronObj.fav_drink(drinkObj.name)
 ask_fav_drink(favorite_drink)
+patronObj.update_tab(drinkObj)
+patronObj.return_tab
 
 
 

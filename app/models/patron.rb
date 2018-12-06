@@ -18,6 +18,13 @@ class Patron < ActiveRecord::Base
 		self.save
 	end
 
+	def return_tab
+
+		puts "Your total tonight is $#{self.tab}. Thanks Nerd!"
+		binding.pry
+		self.close_out
+	end 
+
 	# def ask_fav_drink(drink)
 	# 	 prompt = TTY::Prompt.new
 	# 	 ask_if_fav = prompt.select("How is everything?", ["Great, I'll have another!", "I hate it! Close me out!"])
