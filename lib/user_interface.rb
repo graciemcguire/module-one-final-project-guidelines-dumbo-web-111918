@@ -1,11 +1,7 @@
 require "pry"
-# prompt = TTY::Prompt.new
-# database = {}
-# puts "What is your name?"
-# input = gets.chomp
-# puts "What's your age?"
-# input_2 = Integer(gets.chomp)
-# database[input.to_sym] = input_2
+
+@@drink = {}
+
 def welcome
   puts "They Did Surgery On A Grape (The Bar)"
 end
@@ -17,32 +13,32 @@ def new_customer
   puts "Nice to meet you, #{patron_name}"
 end
 
-#if name is in database say the usual? or somthing and pull from user.favorite drinks,
-#else, go through first_prompt process
-
-
 ##this method will update a hash with the user choices
 ##and then they will be compared to seed data and
 ##drinks will be filtered out and selected depending on choices.
 def first_prompt
-  drink = {}
   prompt = TTY::Prompt.new
-  drink["type"] = prompt.select("How do you like it?", %w(Basic Classic House-Specials Straight-Up))
-  drink["base"] = prompt.select("Do you have a liquor preference?", %w(Whiskey Vodka Tequila Gin))
-  drink["price"] = prompt.select("Any plans for the evening?", ["No, I have to work tomorrow.", "I'm gonna drown my sorrows."])
+  @@drink["type"] = prompt.select("How do you like it?", %w(Basic Classic House-Special Straight-Up)).downcase
+  @@drink["base"] = prompt.select("Do you have a liquor preference?", %w(Whiskey Vodka Tequila Gin)).downcase
+  # @@drink["price"] = prompt.select("Any plans for the evening?", ["No, I have to work tomorrow.", "I'm gonna drown my sorrows."]).downcase
+  @@drink
 end
 
 def find_drink
-  Drink.all.find do |drink|
-    binding.pry
-  end
+  chosen_drink = Drink.where({drink_type: @@drink["type"], base: @@drink["base"]})[0]
+  "Here you go #{Patron.last.name}, a nice glass of #{chosen_drink.name}"
+end
+
+def update_tab
+    self.tab += find_drink.price
 end
 
 def close_out
-  self.tab = 0
+  
 end
 
-
+# Drink.where({drink_type: "classic", base: "vodka"})
+#Drink.where ({drink_type: drink["type"], base: drink["base"]})
 
 
 
@@ -63,7 +59,6 @@ end
 ##NEED TO DO####
 
   # - create favorite drink thing for user?
-  # - figure out how to make everything connect?
   # - create tab
   # - fourth_prompt (how is it?) method
   # - create close out method
