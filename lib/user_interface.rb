@@ -9,8 +9,8 @@ end
 def new_customer
   puts "What is your name?"
   patron_name = gets.chomp
-  Patron.create(name: patron_name, favorite_drink: nil, tab: 0)
   puts "Nice to meet you, #{patron_name}"
+  Patron.create(name: patron_name, favorite_drink: nil, tab: 0)
 end
 
 ##this method will update a hash with the user choices
@@ -20,25 +20,28 @@ def first_prompt
   prompt = TTY::Prompt.new
   @@drink["type"] = prompt.select("How do you like it?", %w(Basic Classic House-Special Straight-Up)).downcase
   @@drink["base"] = prompt.select("Do you have a liquor preference?", %w(Whiskey Vodka Tequila Gin)).downcase
-  # @@drink["price"] = prompt.select("Any plans for the evening?", ["No, I have to work tomorrow.", "I'm gonna drown my sorrows."]).downcase
+  determing_strength = prompt.select("Any plans for the evening?", ["No, I have to work tomorrow.", "I'm gonna drown my sorrows."]).downcase
   @@drink
 end
 
-def find_drink
+def find_drink(patron)
   chosen_drink = Drink.where({drink_type: @@drink["type"], base: @@drink["base"]})[0]
-  "Here you go #{Patron.last.name}, a nice glass of #{chosen_drink.name}"
+  puts "Here you go #{patron.name}, a nice glass of #{chosen_drink.name}"
+  chosen_drink
 end
 
-def update_tab
-    self.tab += find_drink.price
+def ask_fav_drink(drink)
+   prompt = TTY::Prompt.new
+   ask_if_fav = prompt.select("How is everything?", ["Great, I'll have another!", "I hate it! Close me out!"])
+    # binding.pry
+      if ask_if_fav == "Great, I'll have another!"
+        # patron.fav_drink(drink)
+        first_prompt
+        find_drink(patron)
+      end
 end
 
-def close_out
-  
-end
 
-# Drink.where({drink_type: "classic", base: "vodka"})
-#Drink.where ({drink_type: drink["type"], base: drink["base"]})
 
 
 
@@ -58,9 +61,6 @@ end
 
 ##NEED TO DO####
 
-  # - create favorite drink thing for user?
-  # - create tab
-  # - fourth_prompt (how is it?) method
   # - create close out method
   # - open or close out method/ prompt
 

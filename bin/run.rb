@@ -7,10 +7,12 @@ require 'pry'
 
 
 welcome
-new_customer
+patronObj = new_customer
 drink = first_prompt
-find_drink
-patron = Patron.last
+drinkObj = find_drink(patronObj)
+patronObj.update_tab(drinkObj)
+favorite_drink = patronObj.fav_drink(drinkObj.name)
+ask_fav_drink(favorite_drink)
 
 
 
